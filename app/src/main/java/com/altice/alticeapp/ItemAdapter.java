@@ -12,6 +12,8 @@ import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
+import com.robotemi.sdk.Robot;
+
 import java.util.ArrayList;
 
 public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ViewHolder> {
@@ -37,8 +39,9 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ViewHolder> {
             VidButton = (ImageButton)v.findViewById(R.id.videoButton);
             VidDescription = (TextView)v.findViewById(R.id.videoDesc);
             VidButton.setOnClickListener(view -> {
-                Intent intent = new Intent(mcon,VideoShow.class);
-                intent.putExtra("videolink",videoinfo.urlVid);
+                Intent intent = new Intent(mcon,RobotActivity.class);
+                intent.putExtra("videoinfo",videoinfo.urlVid);
+                intent.putExtra("location",videoinfo.location);
                 mcon.startActivity(intent);
             });
         }

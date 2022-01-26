@@ -39,6 +39,7 @@
 
             <TextView
                 android:id="@+id/videoDesc"
+                android:textColor="@color/white"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:gravity="center"

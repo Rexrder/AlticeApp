@@ -11,17 +11,39 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.AlticeApp">
         <activity
+            android:name=".RobotActivity"
+            android:exported="false"
+            android:theme="@style/Theme.AlticeApp.NoActionBar"
+            android:screenOrientation="landscape">
+            <meta-data
+                android:name="com.robotemi.sdk.metadata.UI_MODE"
+                android:value="4" />
+        </activity>
+        <activity
             android:name=".VideoShow"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:exported="false"
             android:label="@string/title_activity_fullscreen_video"
             android:screenOrientation="landscape"
-            android:theme="@style/Theme.AlticeApp.NoActionBar"/>
-        <!--
+            android:theme="@style/Theme.AlticeApp.NoActionBar">
+            <meta-data
+                android:name="com.robotemi.sdk.metadata.UI_MODE"
+                android:value="4" />
+        </activity>
+
         <meta-data
             android:name="com.robotemi.sdk.metadata.SKILL"
             android:value="@string/app_name" />
-        -->
+
+        <meta-data
+            android:name="com.robotemi.sdk.metadata.KIOSK"
+            android:value="true" />
+
+
+        <meta-data
+            android:name="com.robotemi.sdk.metadata.ACTIONS"
+            android:value="show.1,show.2" />
+
         <activity
             android:name=".SplashScreen"
             android:exported="true"
@@ -31,6 +53,9 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+            <meta-data
+                android:name="com.robotemi.sdk.metadata.UI_MODE"
+                android:value="4" />
         </activity>
         <activity
             android:name=".MainActivity"
@@ -39,7 +64,12 @@
             android:resizeableActivity="true"
             android:screenOrientation="landscape"
             android:theme="@style/Theme.AlticeApp.NoActionBar"
-            tools:targetApi="24" />
+            tools:targetApi="24">
+            <meta-data
+                android:name="com.robotemi.sdk.metadata.UI_MODE"
+                android:value="4" />
+        </activity>
+
     </application>
 
 </manifest>

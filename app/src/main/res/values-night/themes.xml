@@ -15,6 +15,7 @@
     </style>
 
     <style name="Theme.AlticeApp.NoActionBar">
+        <item name="android:background">@color/black</item>
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
     </style>
