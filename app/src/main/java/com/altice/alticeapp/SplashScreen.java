@@ -33,7 +33,6 @@ public class SplashScreen extends AppCompatActivity implements
         super.onStop();
         Robot.getInstance().removeOnBeWithMeStatusChangedListener(this);
         Robot.getInstance().removeOnRobotReadyListener(this);
-
     }
 
     @Override
@@ -42,6 +41,7 @@ public class SplashScreen extends AppCompatActivity implements
         setContentView(R.layout.activity_splash_screen);
         Objects.requireNonNull(getSupportActionBar()).hide();
         robot = Robot.getInstance();
+        robot.requestToBeKioskApp();
         Log.d("kiosk", String.valueOf(robot.isSelectedKioskApp()));
     }
 

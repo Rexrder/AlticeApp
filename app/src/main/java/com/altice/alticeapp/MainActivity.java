@@ -14,6 +14,7 @@ import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.HorizontalScrollView;
 
 import com.robotemi.sdk.NlpResult;
@@ -21,6 +22,7 @@ import com.robotemi.sdk.Robot;
 import com.robotemi.sdk.TtsRequest;
 import com.robotemi.sdk.listeners.OnBeWithMeStatusChangedListener;
 import com.robotemi.sdk.listeners.OnConstraintBeWithStatusChangedListener;
+import com.robotemi.sdk.listeners.OnConversationStatusChangedListener;
 import com.robotemi.sdk.listeners.OnGoToLocationStatusChangedListener;
 import com.robotemi.sdk.listeners.OnLocationsUpdatedListener;
 import com.robotemi.sdk.listeners.OnRobotReadyListener;
@@ -30,7 +32,8 @@ import java.util.Arrays;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements
-        OnRobotReadyListener,Robot.NlpListener, Robot.AsrListener
+        OnRobotReadyListener, Robot.AsrListener
+        /*,OnConversationStatusChangedListener*/
 {
 
     ItemAdapter adapter;
@@ -42,8 +45,7 @@ public class MainActivity extends AppCompatActivity implements
         super.onStart();
         Robot.getInstance().addOnRobotReadyListener(this);
         Robot.getInstance().addAsrListener(this);
-        Robot.getInstance().addNlpListener(this);
-        Robot.getInstance().addOnRobotReadyListener(this);
+        /*Robot.getInstance().addOnConversationStatusChangedListener(this);*/
     }
 
     @Override
@@ -51,7 +53,7 @@ public class MainActivity extends AppCompatActivity implements
         super.onStop();
         Robot.getInstance().removeOnRobotReadyListener(this);
         Robot.getInstance().removeAsrListener(this);
-        Robot.getInstance().removeNlpListener(this);
+        /*Robot.getInstance().removeOnConversationStatusChangedListener(this);*/
     }
 
     @Override
@@ -75,11 +77,10 @@ public class MainActivity extends AppCompatActivity implements
     public ArrayList<VideoInfo> getItems(){
         return new ArrayList<VideoInfo>(){
                 {
-                    add(new VideoInfo(R.raw.smarthome_vision,"SmartHome Vision",R.drawable.smarthome_vision,"smarth",new String[]{"smart-home promo", "smart home promo", "promo"}));
-                    add(new VideoInfo(R.raw.smarthome_promo,"SmartHome Promo",R.drawable.smarthome_promo,"smarth",new String[]{"smart-home vision", "smart home vision", "vision","smart home"}));
-                    add(new VideoInfo(R.raw.sfp_secret_promo_v2,"SFP",R.drawable.sfp_secret_promo_v2_,"sfp",new String[]{"sfp", "sfb"}));
-                    add(new VideoInfo(R.raw.olt2tx_en,"New OLT2Tx Family",R.drawable.olt2tx_en,"olt2tx",new String[]{"olt2tx", "olt2t", "olt2tx family"}));
-                    add(new VideoInfo(R.raw.small_cells5g_en,"Small Cells 5G",R.drawable.small_cells5g,"smallcells", new String[]{"small cells", "small cells 5g", "5g","small sales"}));
+                    add(new VideoInfo(R.raw.smarthome_vision,"SmartHome Vision",R.drawable.smarthome,"smart home",new String[]{"smart-home promo", "smart home promo", "promo","smart home","Smart Home","smartphone"}));
+                    add(new VideoInfo(R.raw.sfp_secret_promo_v2,"SFP",R.drawable.sfp,"sfp",new String[]{"sfp", "sfb", "SFP"}));
+                    add(new VideoInfo(R.raw.olt2tx_en,"New OLT2Tx Family",R.drawable.olt2tx,"olt2tx family",new String[]{"olt2tx", "olt2t", "olt2tx family","olt family","olt"}));
+                    add(new VideoInfo(R.raw.small_cells5g_en,"Small Cells 5G",R.drawable.small_cells5g,"small cells 5g", new String[]{"small cells", "small cells 5g", "5g","small sales","small cell","Smokehouse"}));
                 }
             };
     }
@@ -101,17 +102,9 @@ public class MainActivity extends AppCompatActivity implements
         }
     }
 
-    public String[] nlpResults = {"show.1","show.2"};
-
-    @RequiresApi(api = Build.VERSION_CODES.N)
-    @Override
-    public void onNlpCompleted(@NonNull NlpResult nlpResult) {
-        //do something with nlp result. Base the action specified in the AndroidManifest.xml
-        if (Arrays.asList(nlpResults).contains(nlpResult.action))
-            robot.askQuestion("Choose which project you want to know more about");
-    }
     @Override
     public void onAsrResult(@NonNull String s) {
+        Log.d("Response",s);
         for (int i=0; i < getItems().size(); i++){
             VideoInfo info = getItems().get(i);
             for(int j=0; j < info.asrText.length;j++){
@@ -124,4 +117,11 @@ public class MainActivity extends AppCompatActivity implements
             }
         }
     }
+
+    /*@Override
+    public void onConversationStatusChanged(int i, @NonNull String s) {
+        Log.d("state", String.valueOf(i));
+        Log.d("text",s);
+    }*/
+
 }

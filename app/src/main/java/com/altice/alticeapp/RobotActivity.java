@@ -25,7 +25,8 @@ public class RobotActivity extends AppCompatActivity implements
         OnBeWithMeStatusChangedListener, OnGoToLocationStatusChangedListener{
 
     Robot robot;
-    boolean end;
+    boolean end = false;
+    boolean userchoice = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,7 +42,6 @@ public class RobotActivity extends AppCompatActivity implements
         super.onStart();
         Robot.getInstance().addOnBeWithMeStatusChangedListener(this);
         Robot.getInstance().addOnGoToLocationStatusChangedListener(this);
-        Robot.getInstance().addOnBeWithMeStatusChangedListener(this);
     }
 
     @Override
@@ -49,7 +49,6 @@ public class RobotActivity extends AppCompatActivity implements
         super.onStop();
         Robot.getInstance().removeOnBeWithMeStatusChangedListener(this);
         Robot.getInstance().removeOnGoToLocationStatusChangedListener(this);
-        Robot.getInstance().removeOnBeWithMeStatusChangedListener(this);
     }
 
     @Override
@@ -60,11 +59,17 @@ public class RobotActivity extends AppCompatActivity implements
             Intent intent = new Intent(RobotActivity.this,VideoShow.class);
             intent.putExtra("videoinfo",getIntent().getIntExtra("videoinfo",0));
             startActivity(intent);
+            userchoice = false;
             finish();
         }
-        if(s.equals("abort"))
-        if (end) robot.beWithMe();
-        else end = true;
+        if(s.equals("abort") && userchoice)
+        if (end){
+            finish();
+        }
+        else{
+            robot.beWithMe();
+            end = true;
+        }
     }
 
     @Override

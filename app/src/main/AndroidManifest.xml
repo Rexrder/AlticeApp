@@ -39,10 +39,31 @@
             android:name="com.robotemi.sdk.metadata.KIOSK"
             android:value="true" />
 
+        <meta-data
+            android:name="com.robotemi.sdk.metadata.OVERRIDE_NLU"
+            android:value="true" />
 
         <meta-data
-            android:name="com.robotemi.sdk.metadata.ACTIONS"
-            android:value="show.1,show.2" />
+            android:name="com.robotemi.sdk.metadata.OVERRIDE_CONVERSATION_LAYER"
+            android:value="false" />
+
+        <meta-data
+            android:name="com.robotemi.sdk.metadata.PERMISSIONS"
+            android:value="com.robotemi.permission.face_recognition,
+                           com.robotemi.permission.map,
+                           com.robotemi.permission.settings,
+                           com.robotemi.permission.sequence" />
+
+        <!-- Set value to true to cover original voice flow[ASR]. -->
+        <meta-data
+            android:name="com.robotemi.sdk.metadata.OVERRIDE_STT"
+            android:value="false" />
+
+        <!-- Set value to true to cover original voice flow[TTS]. -->
+        <meta-data
+            android:name="com.robotemi.sdk.metadata.OVERRIDE_TTS"
+            android:value="true" />
+
 
         <activity
             android:name=".SplashScreen"
