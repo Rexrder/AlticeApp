@@ -26,16 +26,20 @@ import com.robotemi.sdk.listeners.OnConversationStatusChangedListener;
 import com.robotemi.sdk.listeners.OnGoToLocationStatusChangedListener;
 import com.robotemi.sdk.listeners.OnLocationsUpdatedListener;
 import com.robotemi.sdk.listeners.OnRobotReadyListener;
+import com.robotemi.sdk.listeners.OnUserInteractionChangedListener;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class MainActivity extends AppCompatActivity implements
-        OnRobotReadyListener, Robot.AsrListener
+        OnRobotReadyListener, Robot.AsrListener, OnUserInteractionChangedListener
         /*,OnConversationStatusChangedListener*/
 {
 
+    private static final Timer timer = new Timer();
     ItemAdapter adapter;
     Robot robot;
     RecyclerView recyclerview;
@@ -45,6 +49,7 @@ public class MainActivity extends AppCompatActivity implements
         super.onStart();
         Robot.getInstance().addOnRobotReadyListener(this);
         Robot.getInstance().addAsrListener(this);
+        Robot.getInstance().addOnUserInteractionChangedListener(this);
         /*Robot.getInstance().addOnConversationStatusChangedListener(this);*/
     }
 
@@ -53,6 +58,7 @@ public class MainActivity extends AppCompatActivity implements
         super.onStop();
         Robot.getInstance().removeOnRobotReadyListener(this);
         Robot.getInstance().removeAsrListener(this);
+        Robot.getInstance().removeOnUserInteractionChangedListener(this);
         /*Robot.getInstance().removeOnConversationStatusChangedListener(this);*/
     }
 
@@ -87,6 +93,7 @@ public class MainActivity extends AppCompatActivity implements
 
     @Override
     public void onRobotReady(boolean b) {
+        Log.d("DetMode", String.valueOf(robot.isDetectionModeOn()));
         if(b){
             refreshTemiUi();
         }
@@ -115,6 +122,22 @@ public class MainActivity extends AppCompatActivity implements
                     startActivity(intent);
                 }
             }
+        }
+    }
+
+    @Override
+    public void onUserInteraction(boolean b) {
+        Log.d("state", String.valueOf(b));
+        if(!b){
+            timer.schedule( new TimerTask() {
+                @Override
+                public void run() {
+                    Log.d("timer","working");
+                    finishAffinity();
+                }
+                }, 60 * 1000);
+        }else{
+            timer.cancel();
         }
     }
 

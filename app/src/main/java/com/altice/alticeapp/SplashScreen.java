@@ -16,7 +16,7 @@ import com.robotemi.sdk.listeners.OnRobotReadyListener;
 import java.util.Objects;
 
 public class SplashScreen extends AppCompatActivity implements
-        OnBeWithMeStatusChangedListener, OnRobotReadyListener {
+        OnBeWithMeStatusChangedListener, OnRobotReadyListener{
 
     Robot robot;
 
@@ -25,7 +25,6 @@ public class SplashScreen extends AppCompatActivity implements
         super.onStart();
         Robot.getInstance().addOnBeWithMeStatusChangedListener(this);
         Robot.getInstance().addOnRobotReadyListener(this);
-
     }
 
     @Override
@@ -41,8 +40,6 @@ public class SplashScreen extends AppCompatActivity implements
         setContentView(R.layout.activity_splash_screen);
         Objects.requireNonNull(getSupportActionBar()).hide();
         robot = Robot.getInstance();
-        robot.requestToBeKioskApp();
-        Log.d("kiosk", String.valueOf(robot.isSelectedKioskApp()));
     }
 
     @Override
@@ -57,6 +54,10 @@ public class SplashScreen extends AppCompatActivity implements
 
     @Override
     public void onRobotReady(boolean b) {
-        robot.beWithMe();
+        robot.requestToBeKioskApp();
+        robot.setDetectionModeOn(true);
+        Log.d("DetMode", String.valueOf(robot.isSelectedKioskApp()));
+        Log.d("kiosk", String.valueOf(robot.isDetectionModeOn()));
+        robot.goTo("start");
     }
 }
