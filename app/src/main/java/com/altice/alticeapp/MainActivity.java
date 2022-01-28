@@ -23,6 +23,7 @@ import com.robotemi.sdk.TtsRequest;
 import com.robotemi.sdk.listeners.OnBeWithMeStatusChangedListener;
 import com.robotemi.sdk.listeners.OnConstraintBeWithStatusChangedListener;
 import com.robotemi.sdk.listeners.OnConversationStatusChangedListener;
+import com.robotemi.sdk.listeners.OnDetectionStateChangedListener;
 import com.robotemi.sdk.listeners.OnGoToLocationStatusChangedListener;
 import com.robotemi.sdk.listeners.OnLocationsUpdatedListener;
 import com.robotemi.sdk.listeners.OnRobotReadyListener;
@@ -35,20 +36,20 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 public class MainActivity extends AppCompatActivity implements
-        OnRobotReadyListener, Robot.AsrListener, OnUserInteractionChangedListener
+        OnRobotReadyListener, Robot.AsrListener, OnUserInteractionChangedListener, OnDetectionStateChangedListener
         /*,OnConversationStatusChangedListener*/
 {
-
-    private static final Timer timer = new Timer();
     ItemAdapter adapter;
     Robot robot;
     RecyclerView recyclerview;
+    private static Timer timer = new Timer();
 
     @Override
     protected void onStart() {
         super.onStart();
         Robot.getInstance().addOnRobotReadyListener(this);
         Robot.getInstance().addAsrListener(this);
+        Robot.getInstance().addOnDetectionStateChangedListener(this);
         Robot.getInstance().addOnUserInteractionChangedListener(this);
         /*Robot.getInstance().addOnConversationStatusChangedListener(this);*/
     }
@@ -58,6 +59,7 @@ public class MainActivity extends AppCompatActivity implements
         super.onStop();
         Robot.getInstance().removeOnRobotReadyListener(this);
         Robot.getInstance().removeAsrListener(this);
+        Robot.getInstance().removeOnDetectionStateChangedListener(this);
         Robot.getInstance().removeOnUserInteractionChangedListener(this);
         /*Robot.getInstance().removeOnConversationStatusChangedListener(this);*/
     }
@@ -125,19 +127,26 @@ public class MainActivity extends AppCompatActivity implements
         }
     }
 
+
     @Override
     public void onUserInteraction(boolean b) {
         Log.d("state", String.valueOf(b));
-        if(!b){
+    }
+
+    @Override
+    public void onDetectionStateChanged(int i) {
+        Log.d("Det", String.valueOf(i));
+        if (i==0){
             timer.schedule( new TimerTask() {
                 @Override
                 public void run() {
                     Log.d("timer","working");
                     finishAffinity();
                 }
-                }, 60 * 1000);
+            }, 60 * 1000);
         }else{
             timer.cancel();
+            timer = new Timer();
         }
     }
 

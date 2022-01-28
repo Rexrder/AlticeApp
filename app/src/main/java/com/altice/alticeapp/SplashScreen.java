@@ -11,12 +11,16 @@ import android.util.Log;
 import com.robotemi.sdk.Robot;
 import com.robotemi.sdk.constants.CliffSensorMode;
 import com.robotemi.sdk.listeners.OnBeWithMeStatusChangedListener;
+import com.robotemi.sdk.listeners.OnDetectionStateChangedListener;
 import com.robotemi.sdk.listeners.OnRobotReadyListener;
+import com.robotemi.sdk.listeners.OnUserInteractionChangedListener;
 
 import java.util.Objects;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class SplashScreen extends AppCompatActivity implements
-        OnBeWithMeStatusChangedListener, OnRobotReadyListener{
+        OnBeWithMeStatusChangedListener, OnRobotReadyListener {
 
     Robot robot;
 
@@ -55,6 +59,7 @@ public class SplashScreen extends AppCompatActivity implements
     @Override
     public void onRobotReady(boolean b) {
         robot.requestToBeKioskApp();
+        robot.setTrackUserOn(false);
         robot.setDetectionModeOn(true);
         Log.d("DetMode", String.valueOf(robot.isSelectedKioskApp()));
         Log.d("kiosk", String.valueOf(robot.isDetectionModeOn()));
